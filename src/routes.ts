@@ -1,9 +1,9 @@
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory } from 'vue-router';
 
-const Home = () => import('./pages/Home.vue')
-const Destination = () => import('./pages/Destination.vue')
-const Crew = () => import('./pages/Crew.vue')
-const Technology = () => import('./pages/Technology.vue')
+const Home = () => import('./pages/Home.vue');
+const Destination = () => import('./pages/Destination.vue');
+const Crew = () => import('./pages/Crew.vue');
+const Technology = () => import('./pages/Technology.vue');
 
 const router = createRouter({
   history: createWebHistory(),
@@ -11,12 +11,12 @@ const router = createRouter({
     {
       name: 'Home',
       path: '/',
-      component: Home
+      component: Home,
     },
     {
       name: 'Destination',
       path: '/destination',
-      component: Destination
+      component: Destination,
     },
     {
       name: 'Crew',
@@ -26,9 +26,9 @@ const router = createRouter({
     {
       name: 'Technology',
       path: '/technology',
-      component: Technology
-    }
-  ]
-})
+      component: Technology,
+    },
+  ],
+});
 
 export default router

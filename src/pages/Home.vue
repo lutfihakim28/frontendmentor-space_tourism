@@ -1,26 +1,43 @@
 <script lang="ts" setup>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
+
+const emits = defineEmits({
+  changeNav: () => true,
+  mounted: (path: string) => {
+    if (path) return true
+    else return false
+  },
+})
 </script>
 
 <template>
   <section
-    class="w-screen h-screen pt-24 bg-home-mobile md:bg-home-tablet xl:bg-home-desktop bg-cover xl:pt-96 xl:pb-32 xl:px-40"
+    class="h-screen w-screen bg-home-mobile bg-cover pt-24 md:bg-home-tablet md:pt-26 xl:bg-home-desktop xl:px-40 xl:pt-96 xl:pb-32"
+    @vnode-mounted="emits('mounted', 'home')"
   >
-    <section class="px-6 py-12 h-full flex flex-col justify-between items-center md:justify-around md:h-auto md:px-40 xl:p-0 xl:flex-row xl:justify-between xl:items-end">
-      <div class="flex flex-col gap-y-4 items-center md:gap-y-6 xl:w-[28rem] xl:items-start">
-        <p
-          class="font-barlow-condensed tracking-[0.16875rem] text-lavender md:text-xl xl:text-[1.75rem] xl:tracking-[0.295rem]"
-        >SO, YOU WANT TO TRAVEL TO</p>
-        <h1 class="font-bellefair text-[5rem] leading-[6.25rem] text-white md:text-[9rem] md:leading-[9rem]">SPACE</h1>
-        <p
-          class="font-barlow text-base text-center text-lavender md:leading-loose xl:text-lg xl:text-left"
-        >Let's face it; if you want to go to space, you might as well genuinely go to outer space and not hover kind of on the edge of it. Well sut back, and relaz because we'll give you a truly out of this world experience!</p>
+    <section class="flex h-full flex-col items-center gap-y-20 px-6 py-12 md:h-auto md:gap-y-39 md:px-40 xl:flex-row xl:items-end xl:justify-between xl:p-0">
+      <div class="flex flex-col items-center gap-y-4 md:gap-y-6 xl:w-112 xl:items-start">
+        <p class="font-barlow-condensed text-base tracking-2.7 text-lavender md:text-xl xl:text-7 xl:tracking-4.72">
+          SO, YOU WANT TO TRAVEL TO
+        </p>
+        <h1 class="font-bellefair text-20 leading-25 text-white md:text-36 md:leading-36">
+          SPACE
+        </h1>
+        <p class="text-center font-barlow text-base text-lavender md:leading-loose xl:text-left xl:text-lg">
+          Let's face it; if you want to go to space, you might as well genuinely
+          go to outer space and not hover kind of on the edge of it. Well sut
+          back, and relaz because we'll give you a truly out of this world
+          experience!
+        </p>
       </div>
       <RouterLink
         :to="{ name: 'Destination' }"
-        class="w-[9.5rem] h-[9.5rem] flex justify-center items-center rounded-full bg-white relative z-10 hover:shadow-[0_0_0.3rem_2rem_#151923dd] transition-shadow md:w-60 md:h-60"
+        class="relative z-10 flex h-38 w-38 items-center justify-center rounded-full bg-white transition-shadow hover:shadow-explore md:h-60 md:w-60"
+        @click="emits('changeNav')"
       >
-        <span class="font-bellefair text-xl tracking-wider md:text-3xl">EXPLORE</span>
+        <span class="font-bellefair text-xl tracking-wider md:text-3xl"
+          >EXPLORE</span
+        >
       </RouterLink>
     </section>
   </section>

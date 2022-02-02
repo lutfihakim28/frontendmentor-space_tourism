@@ -1,65 +1,169 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router';
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
+import data from './data.json';
 
-const isMenuOpen = ref(false)
-const activeMenu = ref('Home')
-const navs = ['Home', 'Destination', 'Crew', 'Technology']
+const isMenuOpen = ref(false);
+const pathLocation = ref<string>();
+const navs = ['home', 'destination', 'crew', 'technology'];
+const nav = ref<HTMLElement>();
+const isScrollOnTop = ref(true);
+const screenWidth = ref<number>();
+
+window.addEventListener(
+  'resize',
+  () => {
+    screenWidth.value = document.body.clientWidth;
+  },
+  false,
+);
+
+onMounted(() => {
+  document.addEventListener(
+    'click',
+    (event) => {
+      const target = event.target as Element
+      if (
+        target.id == 'nav' ||
+        target.id == 'nav-button' ||
+        target.id == 'nav-button-hamburger' ||
+        target.id == 'nav-button-close'
+      ) {
+        return
+      } else {
+        isMenuOpen.value = false
+      }
+    },
+    false,
+  );
+
+  screenWidth.value = document.body.clientWidth;
+
+  changePathOnReload();
+});
+
+function changePathOnReload() {
+  const path = window.location.pathname.slice(1);
+  if (path == '') {
+    pathLocation.value = 'home';
+  } else {
+    pathLocation.value = path;
+  };
+};
+
+function changePath(path: string) {
+  pathLocation.value = path;
+};
 
 function clickedMenu(nav: string) {
-  activeMenu.value = nav,
-    isMenuOpen.value = false
-}
+  pathLocation.value = nav;
+  isMenuOpen.value = false;
+};
+
+function clicked() {
+  isMenuOpen.value = !isMenuOpen.value;
+};
+
+function pathTarget(path: string) {
+  return path.charAt(0).toUpperCase() + path.slice(1);
+};
+
+function changeHeaderBackground(position: number) {
+  if (position > 48) {
+    isScrollOnTop.value = false;
+  } else {
+    isScrollOnTop.value = true;
+  };
+};
 </script>
 
 <template>
-  <section class="w-full h-screen relative overflow-hidden">
+  <section class="relative h-full w-full overflow-hidden">
     <header
-      class="w-full h-24 p-6 md:p-0 md:pl-6 absolute flex justify-between items-center xl:pl-14 xl:my-10"
+      class="absolute z-20 flex h-24 w-full items-center justify-between p-6 transition-colors duration-200 md:p-0 md:pl-10 xl:my-10 xl:pl-14"
+      :class="{
+        'bg-white/5': !isScrollOnTop,
+        'backdrop-blur-xl': !isMenuOpen && !isScrollOnTop,
+      }"
     >
-      <img src="./assets/shared/logo.svg" alt="logo" class="w-12 h-12" />
+      <img src="./assets/shared/logo.svg" alt="logo" class="h-12 w-12" />
       <button
-        class="p-0.5 flex justify-center items-center focus:outline-none z-20 focus:ring ring-lavender md:hidden"
-        @click="isMenuOpen = !isMenuOpen"
+        id="nav-button"
+        class="z-50 flex items-center justify-center p-0.5 ring-lavender focus:outline-none focus:ring md:hidden"
+        @click="clicked()"
       >
-        <img src="./assets/shared/icon-hamburger.svg" alt="hamburger" v-if="!isMenuOpen" />
-        <img src="./assets/shared/icon-close.svg" alt="close" v-else />
+        <img
+          id="nav-button-hamburger"
+          src="./assets/shared/icon-hamburger.svg"
+          alt="hamburger"
+          v-if="!isMenuOpen"
+        />
+        <img
+          id="nav-button-close"
+          src="./assets/shared/icon-close.svg"
+          alt="close"
+          v-else
+        />
       </button>
       <nav
-        class="w-64 h-screen absolute pl-8 pt-28 top-0 right-0 bg-white/5 backdrop-blur-xl z-10 transition-transform ease-linear md:h-full md:static md:w-auto md:translate-x-0 md:px-12 md:py-0 xl:p-0 xl:pl-[7.5rem] xl:pr-[10.5rem]"
-        :class="{ 'translate-x-full': !isMenuOpen }"
+        id="nav"
+        class="absolute top-0 right-0 z-40 h-screen w-64 bg-white/5 pt-24 backdrop-blur-xl transition-transform ease-linear md:static md:h-full md:w-auto md:translate-x-0 md:px-12 md:py-0 xl:p-0 xl:pl-30 xl:pr-42"
+        :class="{
+          'translate-x-full': !isMenuOpen,
+          'bg-transparent backdrop-blur-none': !isScrollOnTop && screenWidth! >= 768,
+        }"
       >
-        <ul
-          class="flex flex-col gap-y-8 font-barlow-condensed text-base tracking-[0.16875rem] text-white md:h-full md:text-sm md:tracking-[0.1475rem] md:flex-row md:gap-y-0 md:gap-x-3 xl:gap-x-12 xl:text-base xl:tracking-[0.16875rem]"
-        >
+        <ul class="flex flex-col font-barlow-condensed text-base tracking-2.7 text-white md:h-full md:flex-row md:gap-y-0 md:gap-x-9 md:text-sm md:tracking-2.36 xl:gap-x-12 xl:text-base xl:tracking-2.7">
           <li
             v-for="(nav, id) in navs"
-            class="md:flex md:justify-center md:items-center md:border-b border-transparent hover:md:border-gray-500"
-            :class="{ 'md:border-white': activeMenu == nav }"
+            class="border-transparent md:border-b-4 hover:md:border-gray-500"
+            :class="{
+              'md:border-white hover:md:border-white': pathLocation == nav,
+            }"
           >
-            <RouterLink :to="{ name: nav }" class="flex gap-x-3" @click="clickedMenu(nav)">
+            <RouterLink
+              :to="{ name: pathTarget(nav) }"
+              class="flex items-center gap-x-3 py-4 pl-8 md:h-full md:p-0"
+              @click="clickedMenu(nav)"
+            >
               <span class="font-bold md:hidden xl:inline">0{{ id }}</span>
-              <span class="uppercase">{{ nav }}</span>
+              <span
+                :class="[
+                  'uppercase',
+                  { 'font-bold': pathLocation == nav },
+                  'md:font-normal',
+                ]"
+                >{{ nav }}</span
+              >
             </RouterLink>
           </li>
         </ul>
       </nav>
-      <div class="hidden xl:block absolute left-[10.5rem] w-[29.5rem] h-px bg-gray-500 z-30"></div>
+      <div class="absolute right-200 z-50 hidden h-px w-28% bg-gray-500 xl:block"></div>
     </header>
-    <RouterView></RouterView>
-    <footer class="absolute bottom-0 w-full p-0.5 text-center text-sm text-white">
+    <RouterView
+      @changeNav="pathLocation = 'destination'"
+      @mounted="changePath"
+      @contentScroll="changeHeaderBackground"
+      :destinations="data.destinations"
+      :crews="data.crew"
+      :technologies="data.technology"
+      :screenWidth="screenWidth"
+    ></RouterView>
+    <footer class="absolute bottom-0 w-full bg-white/5 p-0.5 text-center text-xs text-white backdrop-blur-xl">
       Challenge by
       <a
         href="https://www.frontendmentor.io?ref=challenge"
         target="_blank"
         class="text-blue-300 hover:text-lavender"
-      >Frontend Mentor</a>.
-      Coded by
+        >Frontend Mentor</a
+      >. Coded by
       <a
-        href="https://twitter.com/upilMarkupil"
+        href="https://lutfihakim.netlify.app"
         target="_blank"
         class="text-blue-300 hover:text-lavender"
-      >Lutfi Hakim</a>.
+        >Lutfi Hakim</a
+      >.
     </footer>
   </section>
 </template>
