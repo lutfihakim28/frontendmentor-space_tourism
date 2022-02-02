@@ -53,8 +53,8 @@ Users should be able to:
 
 ### Links
 
-- Solution URL: [Add solution URL here](https://your-solution-url.com)
-- Live Site URL: [Add live site URL here](https://your-live-site-url.com)
+- Solution URL: [Solution](https://www.frontendmentor.io/solutions/space-tourism-using-vue-and-tailwind-lhoQC-9aA)
+- Live Site URL: [Live Site](https://lutfi-frontendmentor-space-tourism.vercel.app/)
 
 ## My process
 
