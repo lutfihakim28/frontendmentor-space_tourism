@@ -3,10 +3,10 @@ import { computed, ref } from 'vue';
 import { goToNextImage, changeDetail, goToPrevImage, desktopChangeImage } from '../animationFunction';
 import vehicleLandscape from '../assets/technology/image-launch-vehicle-landscape.jpg';
 import vehiclePortrait from '../assets/technology/image-launch-vehicle-portrait.jpg';
-import capsuleLandscape from '../assets/technology/image-launch-capsule-landscape.jpg';
-import capsulePortrait from '../assets/technology/image-launch-capsule-portrait.jpg';
-import portLandscape from '../assets/technology/image-launch-port-landscape.jpg';
-import portPortrait from '../assets/technology/image-launch-port-portrait.jpg';
+import capsuleLandscape from '../assets/technology/image-space-capsule-landscape.jpg';
+import capsulePortrait from '../assets/technology/image-space-capsule-portrait.jpg';
+import portLandscape from '../assets/technology/image-spaceport-landscape.jpg';
+import portPortrait from '../assets/technology/image-spaceport-portrait.jpg';
 
 const props = defineProps({
   technologies: { type: Object, required: true },
