@@ -1,11 +1,15 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue'
 import { changeDetail, desktopChangeImage, goToNextImage, goToPrevImage } from '../animationFunction';
+import douglas from '../assets/crew/image-douglas-hurley.png';
+import anousheh from '../assets/crew/image-anousheh-ansari.png';
+import mark from '../assets/crew/image-mark-shuttleworth.png';
+import victor from '../assets/crew/image-victor-glover.png';
 
 const props = defineProps({
   crews: { type: Object, required: true },
   screenWidth: { type: Number, required: true },
-})
+});
 
 const emits = defineEmits({
   mounted: (path: string) => {
@@ -22,12 +26,14 @@ const emits = defineEmits({
       return false
     }
   },
-})
+});
 
 function contentScroll() {
   const position = container.value?.scrollTop
   emits('contentScroll', position!)
-}
+};
+
+const images = [douglas, mark, victor, anousheh]
 
 const container = ref<HTMLElement>();
 
@@ -37,11 +43,11 @@ const currentCrewImage = computed(() => {
   if (currentCrewImageId.value || currentCrewImageId.value == 0) {
     return {
       alt: props.crews[currentCrewImageId.value].name,
-      image: props.crews[currentCrewImageId.value].images.png,
+      image: images[currentCrewImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const nextCrewImageElement = ref<HTMLElement>();
@@ -50,11 +56,11 @@ const nextCrewImage = computed(() => {
   if (nextCrewImageId.value || nextCrewImageId.value == 0) {
     return {
       alt: props.crews[nextCrewImageId.value].name,
-      image: props.crews[nextCrewImageId.value].images.png,
+      image: images[nextCrewImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const prevCrewImageElement = ref<HTMLElement>();
@@ -63,11 +69,11 @@ const prevCrewImage = computed(() => {
   if (prevCrewImageId.value || prevCrewImageId.value == 0) {
     return {
       alt: props.crews[prevCrewImageId.value].name,
-      image: props.crews[prevCrewImageId.value].images.png,
+      image: images[prevCrewImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const currentCrewDetailElement = ref<HTMLElement>();

@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { computed, ref } from 'vue';
 import { goToNextImage, changeDetail, goToPrevImage, desktopChangeImage } from '../animationFunction';
+import vehicleLandscape from '../assets/technology/image-launch-vehicle-landscape.jpg';
+import vehiclePortrait from '../assets/technology/image-launch-vehicle-portrait.jpg';
+import capsuleLandscape from '../assets/technology/image-launch-capsule-landscape.jpg';
+import capsulePortrait from '../assets/technology/image-launch-capsule-portrait.jpg';
+import portLandscape from '../assets/technology/image-launch-port-landscape.jpg';
+import portPortrait from '../assets/technology/image-launch-port-portrait.jpg';
 
 const props = defineProps({
   technologies: { type: Object, required: true },
@@ -29,15 +35,18 @@ function contentScroll() {
   emits('contentScroll', position!);
 };
 
+const landscapeImages = [vehicleLandscape, portLandscape, capsuleLandscape];
+const portraitImages = [vehiclePortrait, portPortrait, capsulePortrait];
+
 const container = ref<HTMLElement>();
 
 const currentTechImageElement = ref<HTMLElement>();
 const currentTechImageId = ref(0);
 const currentTechImage = computed(() => {
   if (currentTechImageId.value || currentTechImageId.value == 0) {
-    let image = props.technologies[currentTechImageId.value].images.landscape;
+    let image = landscapeImages[currentTechImageId.value];
     if (props.screenWidth >= 1280) {
-      image = props.technologies[currentTechImageId.value].images.portrait;
+      image = portraitImages[currentTechImageId.value];
     };
     return {
       alt: props.technologies[currentTechImageId.value].name,
@@ -45,16 +54,16 @@ const currentTechImage = computed(() => {
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const nextTechImageElement = ref<HTMLElement>();
 const nextTechImageId = ref();
 const nextTechImage = computed(() => {
   if (nextTechImageId.value || nextTechImageId.value == 0) {
-    let image = props.technologies[nextTechImageId.value].images.landscape;
+    let image = landscapeImages[nextTechImageId.value];
     if (props.screenWidth >= 1280) {
-      image = props.technologies[nextTechImageId.value].images.portrait;
+      image = portraitImages[nextTechImageId.value];
     };
     return {
       alt: props.technologies[nextTechImageId.value].name,
@@ -62,16 +71,16 @@ const nextTechImage = computed(() => {
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const prevTechImageElement = ref<HTMLElement>();
 const prevTechImageId = ref();
 const prevTechImage = computed(() => {
   if (prevTechImageId.value || prevTechImageId.value == 0) {
-    let image = props.technologies[prevTechImageId.value].images.landscape;
+    let image = landscapeImages[prevTechImageId.value];
     if (props.screenWidth >= 1280) {
-      image = props.technologies[prevTechImageId.value].images.portrait;
+      image = portraitImages[prevTechImageId.value];
     };
     return {
       alt: props.technologies[prevTechImageId.value].name,
@@ -79,7 +88,7 @@ const prevTechImage = computed(() => {
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const currentTechDetailElement = ref<HTMLElement>();

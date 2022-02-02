@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
 import { changeDetail, desktopChangeDestinationImage, goToNextImage, goToPrevImage } from '../animationFunction';
+import moon from '../assets/destination/image-moon.png';
+import mars from '../assets/destination/image-mars.png';
+import europa from '../assets/destination/image-europa.png';
+import titan from '../assets/destination/image-titan.png';
 
 const props = defineProps({
   destinations: { type: Object, required: true },
@@ -29,20 +33,21 @@ function contentScroll() {
   emits('contentScroll', position!)
 };
 
+const images = [moon, mars, europa, titan];
+
 const container = ref<HTMLElement>();
 
 const currentDestinationImageElement = ref<HTMLElement>();
-const currentImageElement = ref<HTMLElement>();
 const currentDestinationImageId = ref(0);
 const currentDestinationImage = computed(() => {
   if (currentDestinationImageId.value || currentDestinationImageId.value == 0) {
     return {
       alt: props.destinations[currentDestinationImageId.value].name,
-      image: props.destinations[currentDestinationImageId.value].images.png,
+      image: images[currentDestinationImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const nextDestinationImageElement = ref<HTMLElement>();
@@ -51,11 +56,11 @@ const nextDestinationImage = computed(() => {
   if (nextDestinationImageId.value || nextDestinationImageId.value == 0) {
     return {
       alt: props.destinations[nextDestinationImageId.value].name,
-      image: props.destinations[nextDestinationImageId.value].images.png,
+      image: images[nextDestinationImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const prevDestinationImageElement = ref<HTMLElement>();
@@ -64,11 +69,11 @@ const prevDestinationImage = computed(() => {
   if (prevDestinationImageId.value || prevDestinationImageId.value == 0) {
     return {
       alt: props.destinations[prevDestinationImageId.value].name,
-      image: props.destinations[prevDestinationImageId.value].images.png,
+      image: images[prevDestinationImageId.value],
     };
   };
 
-  return { alt: null, image: null };
+  return { alt: undefined, image: undefined };
 });
 
 const currentDestinationDetailElement = ref<HTMLElement>();
